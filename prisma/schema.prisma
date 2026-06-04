@@ -1,0 +1,233 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Project {
+  id        String   @id
+  name      String
+  color     String
+  leads     Lead[]
+  proposals Proposal[]
+  tasks     Task[]
+  revenues  Revenue[]
+  expenses  Expense[]
+  createdAt DateTime @default(now())
+}
+
+model Lead {
+  id              String   @id @default(cuid())
+  projectId       String
+  project         Project  @relation(fields: [projectId], references: [id])
+  name            String
+  company         String?
+  role            String?
+  sector          String?
+  size            String?
+  status          String   @default("novo")
+  temperature     String?
+  email           String?
+  phone           String?
+  linkedinUrl     String?
+  location        String?
+  setupValue      Float?
+  monthlyValue    Float?
+  probability     Float?   @default(0.3)
+  expectedRevenue Float?   @default(0)
+  nextAction      String?
+  nextDate        DateTime?
+  tags            String?
+  notes           String?
+  rawConversation String?
+  sourceType      String?  // outbound, content, media, partner
+  sourceContentId String?  // FK opcional para ContentIdea.id
+  sourceMediaId   String?  // FK opcional para MediaOutlet.id
+  sourcePartnerId String?  // FK opcional para PartnerCompany.id
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  contacts        ContactLog[]
+  proposals       Proposal[]
+}
+
+model ContactLog {
+  id        String   @id @default(cuid())
+  leadId    String
+  lead      Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  channel   String
+  direction String
+  date      DateTime
+  content   String
+  createdAt DateTime @default(now())
+}
+
+model Proposal {
+  id          String   @id @default(cuid())
+  projectId   String
+  project     Project  @relation(fields: [projectId], references: [id])
+  leadId      String?
+  lead        Lead?    @relation(fields: [leadId], references: [id])
+  client      String
+  title       String
+  status      String   @default("rascunho")
+  setupValue  Float?
+  monthlyValue Float?
+  totalYear   Float?
+  sentAt      DateTime?
+  respondedAt DateTime?
+  notes       String?
+  createdAt   DateTime @default(now())
+}
+
+model Task {
+  id        String   @id @default(cuid())
+  projectId String
+  project   Project  @relation(fields: [projectId], references: [id])
+  title     String
+  status    String   @default("aberta")
+  priority  String   @default("normal")
+  dueDate   DateTime?
+  notes     String?
+  createdAt DateTime @default(now())
+}
+
+model Revenue {
+  id        String   @id @default(cuid())
+  projectId String
+  project   Project  @relation(fields: [projectId], references: [id])
+  client    String
+  amount    Float
+  status    String   @default("pendente")
+  issuedAt  DateTime @default(now())
+  paidAt    DateTime?
+  notes     String?
+}
+
+model Expense {
+  id        String   @id @default(cuid())
+  projectId String
+  project   Project  @relation(fields: [projectId], references: [id])
+  category  String
+  description String?
+  amount    Float
+  recurring Boolean  @default(false)
+  date      DateTime @default(now())
+}
+
+model ContentIdea {
+  id              String   @id @default(cuid())
+  title           String
+  hook            String?
+  angle           String?
+  format          String
+  status          String   @default("ideia")
+  scheduledFor    DateTime?
+  publishedAt     DateTime?
+  platform        String?
+  publishedUrl    String?
+  body            String?
+  notes           String?
+  views           Int?
+  likes           Int?
+  comments        Int?
+  shares          Int?
+  leadsGenerated  Int      @default(0)
+  pillar          String?
+  tags            String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model ContentTemplate {
+  id          String   @id @default(cuid())
+  name        String
+  format      String
+  structure   String
+  description String?
+  timesUsed   Int      @default(0)
+  createdAt   DateTime @default(now())
+}
+
+model MediaOutlet {
+  id               String   @id @default(cuid())
+  type             String
+  name             String
+  editorialContact String?
+  host             String?
+  url              String?
+  audienceSize     String?
+  fitScore         Int?
+  notes            String?
+  status           String   @default("identificado")
+  pitches          Pitch[]
+  createdAt        DateTime @default(now())
+}
+
+model Pitch {
+  id          String      @id @default(cuid())
+  outletId    String
+  outlet      MediaOutlet @relation(fields: [outletId], references: [id], onDelete: Cascade)
+  topic       String
+  date        DateTime
+  message     String?
+  response    String?
+  outcome     String?
+  finalUrl    String?
+  notes       String?
+  createdAt   DateTime    @default(now())
+}
+
+model PartnerCompany {
+  id                  String   @id @default(cuid())
+  name                String
+  contactName         String
+  contactRole         String?
+  email               String?
+  linkedinUrl         String?
+  type                String
+  fitScore            Int?
+  status              String   @default("a_abordar")
+  firstContactDate    DateTime?
+  lastInteractionDate DateTime?
+  notes               String?
+  leadsBrought        Int      @default(0)
+  revenueFromPartner  Int      @default(0)
+  interactions        PartnerInteraction[]
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+}
+
+model FreelanceLead {
+  id              String   @id @default(cuid())
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  platform        String   // malt | upwork | direct
+  projectTitle    String
+  clientName      String?
+  url             String?
+  stage           String   @default("identified") // identified | applied | replied | call_scheduled | proposal_sent | won | lost
+  estValueEur     Float?
+  rateType        String?  // fixed | daily | hourly
+  appliedAt       DateTime?
+  nextAction      String?
+  nextActionDate  DateTime?
+  skillsMatch     String?  // CSV
+  notes           String?
+  outcome         String?  // won | lost | ghosted
+  probability     Float?
+}
+
+model PartnerInteraction {
+  id           String         @id @default(cuid())
+  partnerId    String
+  partner      PartnerCompany @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+  date         DateTime
+  type         String
+  summary      String
+  nextStep     String?
+  nextStepDate DateTime?
+  createdAt    DateTime       @default(now())
+}

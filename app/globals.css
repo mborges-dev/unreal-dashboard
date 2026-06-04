@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body { background: #0a0a0b; color: #f4f4f5; }
+* { border-color: #26262d; }
+
+@layer components {
+  .card { @apply bg-surface border border-border rounded-lg p-4; }
+  .input { @apply bg-surface2 border border-border rounded-md px-3 py-2 text-sm outline-none focus:border-zinc-500 w-full; }
+  .btn { @apply inline-flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium border border-border bg-surface2 hover:bg-surface transition; }
+  .btn-primary { @apply bg-blue-600 border-blue-600 hover:bg-blue-500 text-white; }
+  .badge { @apply inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium border border-border bg-surface2; }
+  .label { @apply text-xs uppercase tracking-wide text-muted; }
+  .link { @apply text-blue-400 hover:underline; }
+  table.data { @apply w-full text-sm; }
+  table.data th { @apply text-left text-xs uppercase text-muted font-medium px-3 py-2 border-b border-border; }
+  table.data td { @apply px-3 py-2 border-b border-border; }
+  table.data tr:hover { @apply bg-surface2/50; }
+}
