@@ -1,6 +1,5 @@
 # UNREAL Dashboard
 
-[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Next.js](https://img.shields.io/badge/Next.js-14-black.svg)](https://nextjs.org/)
 [![Prisma](https://img.shields.io/badge/Prisma-5-2D3748.svg)](https://prisma.io/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-3178c6.svg)](https://www.typescriptlang.org/)
@@ -101,3 +100,13 @@ Copy `.env.example` to `.env.local` and configure:
 DATABASE_URL="file:./prisma/dev.db"   # SQLite for local dev
 # DATABASE_URL="postgresql://..."     # PostgreSQL for production
 ```
+
+---
+
+## Notice
+
+This repository is published as a **portfolio showcase** of my work. The code is **not licensed for reuse, redistribution, or modification.** You're welcome to read it, but it is not open source. If you'd like to discuss similar work, [get in touch](mailto:hello@miguelborges.dev).
+
+---
+
+Built by [Miguel Borges](https://miguelborges.dev) · [hello@miguelborges.dev](mailto:hello@miguelborges.dev)
