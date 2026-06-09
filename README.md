@@ -1,5 +1,10 @@
 # UNREAL Dashboard
 
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Next.js](https://img.shields.io/badge/Next.js-14-black.svg)](https://nextjs.org/)
+[![Prisma](https://img.shields.io/badge/Prisma-5-2D3748.svg)](https://prisma.io/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178c6.svg)](https://www.typescriptlang.org/)
+
 A full-stack business management dashboard built for a freelancer/agency. Covers the entire revenue lifecycle: lead capture, proposal tracking, project financials, content pipeline, and outreach automation.
 
 ## Features
